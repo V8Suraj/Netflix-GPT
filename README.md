@@ -7,6 +7,9 @@
 - -routing ✔
 - -form validation ✔
 - use ref hooks ✔
+- implement sign in signup user api 
+- created redux store with userslice
+- 
 
 #Features
 
@@ -21,3 +24,8 @@
             - Title & Description
             - Movie Suggestion 
             - MovieLists * N
+
+
+
+--------> Backend 
+- Authentication by backend(Firebase)

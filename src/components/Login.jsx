@@ -3,12 +3,21 @@ import Header from "./Header";
 import logo from "../assets/Netflix_Bg.jpg";
 import checkedValid_data from "../utils/checkedValid_Data";
 import ValidateCheck from "../utils/ValidateCheck";
+import SignUp from "./SignUp";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../utils/Firebase";
+import Browse from "./Browse";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/UserSlice";
 
 const Login = () => {
   const [isSignup, setisSignup] = useState(true);
   const [email , setemail] = useState('');
   const [password,setpassword] = useState('');
-  const [error,seterror] = useState('');
+  const [errors,seterror] = useState({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
 
 //   useEffect(()=>{
@@ -29,8 +38,81 @@ const Login = () => {
     const All_InputField = {email,password};
     console.log(All_InputField);
     ValidateCheck(All_InputField,seterror);
-    // Validation for check
+    console.log(errors)
+
+    // if(errors) return;
    
+
+
+    //SignIn and SignuP
+   if(!isSignup){
+    // if me idhar component render krao tho signup wala alag seh banakr tho woh render nhi hoga ,
+    // irf tab render hota hai jab woh return JSX me ho.
+// Function ke andar aise likhne se: <Signup/>
+
+// Component render nahi hota
+
+// Logic execute nahi hota
+
+// Firebase call nahi hoti
+
+// Yeh bas ek unused expression hai.
+
+
+
+    // ! for signup logic
+    createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+
+    updateProfile(auth.currentUser, {
+  displayName: "Suraj Pandey" , 
+  photoURL: "https://lh3.googleusercontent.com/a/ACg8ocLBpU2JgZEGkf8t0pcyHCw4gkZn2SH8nI2Ycq5bearEYolH-0gSdA=s288-c-no"
+}).then(() => {
+  const {uid,email,displayName,photoURL}= auth.currentUser;
+  dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}));
+     navigate("/Browse")
+  // Profile updated!
+  // ...
+}).catch((error) => {
+  // An error occurred
+  // ...
+});
+    console.log(user);
+    // ...
+  })
+  .catch((error) => {
+    console.log(error)
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode);
+  console.log(errorMessage);
+    // seterror(errorCode+errorMessage)
+    // ..
+  })
+   }
+
+   else {
+  // ! sign in functionality 
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+       navigate("/Browse")
+    // ...
+  })
+  .catch((error) => {
+    console.log(error)
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // seterror(errorCode+errorMessage);
+    console.log(errorCode);
+  console.log(errorMessage);
+  });
+    
+   }
   }
 
   return (
@@ -118,13 +200,15 @@ focus:outline-none focus:ring-2 focus:ring-red-600 transition"
            }
         }
           />
-          {error && (
+          {errors && (
           <span className="text-red-600  mb-3 block text-sm">
-  {error.email}
+  {errors.email}
 </span>
 
           )
           }
+
+          
           
 
           {/* this is for password input */}
@@ -139,9 +223,9 @@ onChange={(e) => {
 }}
           />
 
-               {error && (
+               {errors && (
           <span className="text-red-600  mb-3 block text-sm">
-  {error.password}
+  {errors.password}
 </span>
 
           )
@@ -154,7 +238,7 @@ onChange={(e) => {
 py-3 rounded font-semibold hover:bg-red-700 transition duration-300"
          onClick={handleform}
           >
-            Sign In
+           {isSignup ? "Sign in" : "Sign Up"}
           </button>
 
           {/* Text  */}
