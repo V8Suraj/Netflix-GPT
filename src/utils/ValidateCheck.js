@@ -5,7 +5,7 @@ const ValidateCheck = (formdata,seterror) => {
 
    
 
-   console.log(formdata);
+  
    const errorData = {}; 
    //Kyuki JavaScript me arrays ka type bhi "object" hota hai.
    // console.log(typeof Object.entries(formdata));

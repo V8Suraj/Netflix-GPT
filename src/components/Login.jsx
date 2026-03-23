@@ -10,6 +10,7 @@ import Browse from "./Browse";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/UserSlice";
+import { Random_AVATAR } from "../utils/constant";
 
 const Login = () => {
   const [isSignup, setisSignup] = useState(true);
@@ -68,11 +69,10 @@ const Login = () => {
 
     updateProfile(auth.currentUser, {
   displayName: "Suraj Pandey" , 
-  photoURL: "https://lh3.googleusercontent.com/a/ACg8ocLBpU2JgZEGkf8t0pcyHCw4gkZn2SH8nI2Ycq5bearEYolH-0gSdA=s288-c-no"
+  photoURL: Random_AVATAR
 }).then(() => {
   const {uid,email,displayName,photoURL}= auth.currentUser;
   dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}));
-     navigate("/Browse")
   // Profile updated!
   // ...
 }).catch((error) => {
@@ -97,11 +97,7 @@ const Login = () => {
   // ! sign in functionality 
     signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
-    // Signed in 
     const user = userCredential.user;
-    console.log(user)
-       navigate("/Browse")
-    // ...
   })
   .catch((error) => {
     console.log(error)
