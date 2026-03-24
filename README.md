@@ -24,6 +24,7 @@
 - update store with tmdp data 
 - plannig for the main container 
 - update the store , embedded youtube video  
+- recommended video,popular movies,many more things
 
 #Features
 
