@@ -25,6 +25,8 @@
 - plannig for the main container 
 - update the store , embedded youtube video  
 - recommended video,popular movies,many more things
+- GPT SEARCHBAR , 
+- MultiLingual 
 
 #Features
 
